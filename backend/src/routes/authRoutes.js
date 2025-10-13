@@ -1,15 +1,13 @@
 import express from "express";
 import { registerUser, loginUser, getProfile } from "../controllers/authController.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Endpoint de registro
 router.post("/register", registerUser);
-
-// Endpoint de login 
 router.post("/login", loginUser);
 
-// Endpoint de Usuario Autenticado
-router.post("/profile", getProfile);
+// Protegida con JWT
+router.get("/profile", verifyToken, getProfile);
 
 export default router;
