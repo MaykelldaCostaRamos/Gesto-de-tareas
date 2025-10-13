@@ -60,3 +60,15 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Error en el servidor" });
   }
 };
+
+// Obtener perfil
+export const getProfile = async (req, res) => {
+  try {
+    // req.user viene del middleware verifyToken
+    const { userId, name } = req.user;
+    res.json({ userId, name });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error en el servidor" });
+  }
+};
