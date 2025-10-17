@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -16,8 +18,15 @@ connectDB();
 app.use(cors()); // Permite peticiones desde el frontend
 app.use(express.json()); // Para leer JSON en las solicitudes
 
-// Rutas
+
+// Rutas de autenticación
 app.use("/api/auth", authRoutes);
+
+// Rutas de proyectos
+app.use("/api/project", projectRoutes);
+
+// Rutas de tareas
+app.use("/api/task", taskRoutes);
 
 // Puerto dinámico o 4000 por defecto
 const PORT = process.env.PORT || 4000;

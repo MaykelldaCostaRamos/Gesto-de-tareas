@@ -13,13 +13,13 @@ export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Validaciones
-    if (!validateName(name)) return res.status(400).json({ message: "Nombre inválido" });
-    if (!validateEmail(email)) return res.status(400).json({ message: "Email inválido" });
-    if (!validatePassword(password)) return res.status(400).json({ message: "Contraseña muy corta" });
+    if (!validateName(name) || !validateEmail(email) || !validatePassword(password)) {
+      return res.status(400).json({ message: "Datos inválidos o incompletos" });
+    }
 
     // Verificar si el usuario ya existe
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "Usuario ya registrado" });
+    if (existingUser) return res.status(400).json({ message: "El usuario ya está registrado" });
 
     // Hashear contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,10 +27,13 @@ export const registerUser = async (req, res) => {
     // Crear usuario
     const newUser = await User.create({ name, email, password: hashedPassword });
 
-    res.status(201).json({ message: "Usuario registrado", userId: newUser._id });
+    res.status(201).json({
+      message: "Usuario registrado con éxito",
+      userId: newUser._id,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error en el servidor" });
+    console.error("Error en registerUser:", error.message);
+    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
   }
 };
 
@@ -39,36 +42,35 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Buscar usuario por email
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
-    // Comparar contraseña
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Contraseña incorrecta" });
+    if (!isMatch) return res.status(400).json({ message: "Credenciales inválidas" });
 
-    // Generar JWT
     const token = jwt.sign(
       { userId: user._id, name: user.name },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
-    res.json({ message: "Login exitoso", token });
+    res.json({
+      message: "Login exitoso",
+      token,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error en el servidor" });
+    console.error("Error en loginUser:", error.message);
+    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
   }
 };
 
-// Obtener perfil
+//  Obtener perfil
 export const getProfile = async (req, res) => {
   try {
-    // req.user viene del middleware verifyToken
-    const { userId, name } = req.user;
+    const { userId, name } = req.user; // viene del middleware verifyToken
     res.json({ userId, name });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error en el servidor" });
+    console.error("Error en getProfile:", error.message);
+    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
   }
 };

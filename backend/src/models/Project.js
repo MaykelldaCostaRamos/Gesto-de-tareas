@@ -6,6 +6,9 @@ const projectSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  description: {
+    type: String
+  },
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",       // referencia al modelo User
