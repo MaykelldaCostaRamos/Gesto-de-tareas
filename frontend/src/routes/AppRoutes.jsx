@@ -3,7 +3,7 @@ import Layout from "../components/Layout.jsx";
 import LandingPage from "../pages/LandingPage.jsx";
 import Login from "../pages/Login.jsx";
 import Register from "../pages/Register.jsx";
-import Dashboard from "../pages/Dashboard.jsx";
+import Dashboard from "../pages/DashBoard.jsx";
 import Project from "../pages/Project.jsx";
 
 export default function AppRoutes() {
