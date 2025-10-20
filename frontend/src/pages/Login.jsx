@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { loginUser } from "../api/authService";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,10 +32,19 @@ export default function Login() {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-    console.log({ email, password });
+
+    try {
+      const userData = await loginUser({ email, password });
+      console.log("Login exitoso:", userData);
+      navigate("./DashBoard.jsx"); // Redirigir al dashboard, guardar token, etc.
+    } catch (err) {
+      setError(err.response?.data?.message || "Error al iniciar sesión");
+    }
   };
 
   return (

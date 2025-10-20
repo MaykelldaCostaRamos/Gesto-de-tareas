@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { registerUser } from "../api/authService";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -49,11 +51,20 @@ export default function Register() {
     return true;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-    console.log({ name, email, password });
-  };
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
+
+  try {
+    const userData = await registerUser({name, email, password });
+    console.log("Registro exitoso:", userData);
+    navigate("/Login"); // Redirigir al dashboard, guardar token, etc.
+  } catch (err) {
+    setError(err.response?.data?.message || "Error al registrarse");
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4">
