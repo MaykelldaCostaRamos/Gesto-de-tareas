@@ -16,16 +16,16 @@ export const getProject = async (projectId) => {
 };
 
 // Crear nuevo proyecto
-export const createProject = async (nombre) => {
-  const response = await api.post("/project", { nombre });
+export const createProject = async (name) => {
+  const response = await api.post("/project", { name });
   return response.data;
 };
 
 // ===== TAREAS =====
 
 // Crear nueva tarea en un proyecto
-export const createTask = async (projectId, nombre) => {
-  const response = await api.post(`/task/${projectId}`, { nombre });
+export const createTask = async (projectId, name) => {
+  const response = await api.post(`/task/${projectId}`, { name });
   return response.data;
 };
 

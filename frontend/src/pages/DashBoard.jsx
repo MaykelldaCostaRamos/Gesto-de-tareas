@@ -1,4 +1,4 @@
-// pages/Dashboard.jsx
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getProjects, createProject } from "../api/projectService";
@@ -11,8 +11,8 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await getProjects();
-        setProyectos(data);
+        const data = await getProjects(); // data = { success, projects }
+        setProyectos(data.projects || []); // usar solo el array de proyectos
       } catch (error) {
         console.error("Error al cargar proyectos:", error);
       }
@@ -24,8 +24,8 @@ export default function Dashboard() {
   const handleCrearProyecto = async () => {
     if (!nuevoProyecto) return;
     try {
-      const proyectoCreado = await createProject(nuevoProyecto);
-      setProyectos((prev) => [...prev, proyectoCreado]);
+      const response = await createProject(nuevoProyecto); // response = { success, project }
+      setProyectos((prev) => [...prev, response.project]);
       setNuevoProyecto("");
     } catch (error) {
       console.error("Error al crear proyecto:", error);
@@ -58,11 +58,11 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {proyectos.map((project) => (
           <Link
-            key={project.id}
-            to={`/project/${project.id}`}
-            className="p-4 bg-white shadow rounded-lg hover:shadow-lg transition"
+            key={project._id}
+            to={`/project/${project._id}`}
+            className="p-4 bg-white shadow rounded-2xl hover:shadow-xl transition transform hover:scale-105"
           >
-            <h3 className="font-bold text-lg">{project.nombre}</h3>
+            <h3 className="font-bold text-lg">{project.name}</h3>
           </Link>
         ))}
       </div>

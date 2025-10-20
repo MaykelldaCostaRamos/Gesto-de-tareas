@@ -35,17 +35,20 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  e.preventDefault();
+  if (!validate()) return;
 
-    try {
-      const userData = await loginUser({ email, password });
-      console.log("Login exitoso:", userData);
-      navigate("/dashBoard"); 
-    } catch (err) {
-      setError(err.response?.data?.message || "Error al iniciar sesión");
-    }
-  };
+  try {
+    const userData = await loginUser({ email, password });
+    console.log("Login exitoso:", userData);
+
+    // Token ya está guardado en localStorage desde authService.js
+    navigate("/dashBoard"); 
+  } catch (err) {
+    setError(err.response?.data?.message || "Error al iniciar sesión");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4">
