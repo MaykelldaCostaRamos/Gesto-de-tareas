@@ -41,7 +41,7 @@ export default function Login() {
     try {
       const userData = await loginUser({ email, password });
       console.log("Login exitoso:", userData);
-      navigate("./DashBoard.jsx"); // Redirigir al dashboard, guardar token, etc.
+      navigate("/dashBoard"); 
     } catch (err) {
       setError(err.response?.data?.message || "Error al iniciar sesión");
     }
