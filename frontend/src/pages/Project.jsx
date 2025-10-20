@@ -1,55 +1,59 @@
 // pages/Project.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckCircleIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
-
-const proyectosEjemplo = {
-  1: {
-    nombre: "Proyecto Alpha",
-    tareas: [
-      { id: 1, nombre: "Comprar material", estado: "pendiente" },
-      { id: 2, nombre: "Revisar reporte", estado: "completada" },
-      { id: 3, nombre: "Enviar email", estado: "pendiente" },
-      { id: 4, nombre: "Reunión equipo", estado: "pendiente" },
-      { id: 5, nombre: "Actualizar documento", estado: "completada" },
-    ],
-  },
-};
+import { getProject, createTask, toggleTaskState } from "../api/projectService";
 
 export default function Project() {
   const { id } = useParams();
-  const proyecto = proyectosEjemplo[id];
-  const [tareas, setTareas] = useState(proyecto ? proyecto.tareas : []);
+  const [tareas, setTareas] = useState([]);
   const [nuevaTarea, setNuevaTarea] = useState("");
   const [archivos, setArchivos] = useState([]);
 
-  if (!proyecto) return <p>Proyecto no encontrado</p>;
+  // Cargar proyecto al montar
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const data = await getProject(id);
+        setTareas(data.tareas || []);
+      } catch (error) {
+        console.error("Error al cargar proyecto:", error);
+      }
+    };
+    fetchProject();
+  }, [id]);
 
-  const toggleEstado = (taskId) => {
-    setTareas((prev) =>
-      prev.map((t) =>
-        t.id === taskId
-          ? { ...t, estado: t.estado === "pendiente" ? "completada" : "pendiente" }
-          : t
-      )
-    );
+  // Agregar tarea usando backend
+  const agregarTarea = async () => {
+    if (!nuevaTarea) return;
+    try {
+      const nueva = await createTask(id, nuevaTarea);
+      setTareas((prev) => [...prev, nueva]);
+      setNuevaTarea("");
+    } catch (error) {
+      console.error("Error al crear tarea:", error);
+    }
   };
 
-  const agregarTarea = () => {
-    if (!nuevaTarea) return;
-    const nueva = { id: Date.now(), nombre: nuevaTarea, estado: "pendiente" };
-    setTareas((prev) => [...prev, nueva]);
-    setNuevaTarea("");
+  // Cambiar estado de tarea usando backend
+  const toggleEstado = async (taskId) => {
+    try {
+      const updatedTask = await toggleTaskState(taskId);
+      setTareas((prev) =>
+        prev.map((t) => (t.id === taskId ? updatedTask : t))
+      );
+    } catch (error) {
+      console.error("Error al cambiar estado:", error);
+    }
   };
 
   const subirArchivos = () => {
-    // Placeholder para lógica de backend
     alert(`${archivos.length} archivos listos para subir`);
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4">{proyecto.nombre}</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4">Proyecto {id}</h2>
 
       {/* Formulario para agregar tarea */}
       <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
@@ -127,7 +131,6 @@ export default function Project() {
           </button>
         </div>
 
-        {/* Lista de archivos seleccionados */}
         <ul className="mt-2 list-disc list-inside">
           {archivos.map((file, idx) => (
             <li key={idx}>{file.name}</li>
