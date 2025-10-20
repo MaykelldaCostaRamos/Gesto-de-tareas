@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircleIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useParams } from "react-router-dom";
-import { getProject, createTask, toggleTaskState } from "../api/projectService";
+import { getProject, createTask, toggleTaskState, deleteTask } from "../api/projectService";
 
 export default function Project() {
   const { id } = useParams();
@@ -10,7 +10,7 @@ export default function Project() {
   const [nuevaTarea, setNuevaTarea] = useState("");
   const [archivos, setArchivos] = useState([]);
 
-  // Cargar proyecto al montar
+  // Cargar proyecto y sus tareas
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -23,7 +23,7 @@ export default function Project() {
     fetchProject();
   }, [id]);
 
-  // Agregar tarea usando backend
+  // Crear tarea
   const agregarTarea = async () => {
     if (!nuevaTarea) return;
     try {
@@ -35,7 +35,7 @@ export default function Project() {
     }
   };
 
-  // Cambiar estado de tarea usando backend
+  // Cambiar estado de tarea
   const toggleEstado = async (taskId) => {
     try {
       const updatedTask = await toggleTaskState(taskId);
@@ -44,6 +44,16 @@ export default function Project() {
       );
     } catch (error) {
       console.error("Error al cambiar estado:", error);
+    }
+  };
+
+  // Eliminar tarea
+  const eliminarTarea = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+      setTareas((prev) => prev.filter((t) => t.id !== taskId));
+    } catch (error) {
+      console.error("Error al eliminar tarea:", error);
     }
   };
 
@@ -77,7 +87,7 @@ export default function Project() {
         {tareas.map((tarea) => (
           <div
             key={tarea.id}
-            className={`p-4 sm:p-5 rounded-2xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between transition transform hover:scale-105 max-w-full`}
+            className="p-4 sm:p-5 rounded-2xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between transition transform hover:scale-105 max-w-full"
           >
             <div className="flex items-start sm:items-center space-x-3 mb-2 sm:mb-0 flex-1">
               {tarea.estado === "completada" ? (
@@ -92,12 +102,6 @@ export default function Project() {
 
             {/* Botones de acción */}
             <div className="flex space-x-2 mt-2 sm:mt-0">
-              <button className="p-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg transition">
-                <PencilSquareIcon className="w-4 h-4 text-white" />
-              </button>
-              <button className="p-2 bg-red-500 hover:bg-red-600 rounded-lg transition">
-                <TrashIcon className="w-4 h-4 text-white" />
-              </button>
               <button
                 onClick={() => toggleEstado(tarea.id)}
                 className={`px-3 py-1 rounded-lg text-white font-medium transition ${
@@ -107,6 +111,12 @@ export default function Project() {
                 }`}
               >
                 {tarea.estado === "completada" ? "Pendiente" : "Completada"}
+              </button>
+              <button
+                onClick={() => eliminarTarea(tarea.id)}
+                className="p-2 bg-red-500 hover:bg-red-600 rounded-lg transition"
+              >
+                <TrashIcon className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>

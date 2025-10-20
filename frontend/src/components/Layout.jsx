@@ -1,15 +1,26 @@
-// components/Layout.jsx
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Aquí iría la lógica de logout (limpiar token, redirigir, etc.)
-    console.log("Logout ejecutado");
-    setOpen(false); // cierra el drawer en móvil
+  const handleLogout = async () => {
+    try {
+      // Llamada al backend para limpiar cookie
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include", // muy importante para enviar cookie
+      });
+
+      // Redirigir a pagina inicio
+      navigate("/");
+    } catch (error) {
+      console.error("Error al hacer logout:", error);
+    } finally {
+      setOpen(false); // cerrar drawer si estaba abierto
+    }
   };
 
   return (
@@ -31,7 +42,6 @@ export default function Layout() {
             Proyectos
           </Link>
 
-          {/* Spacer para empujar el botón de logout al final */}
           <div className="flex-1"></div>
 
           <button
@@ -77,7 +87,6 @@ export default function Layout() {
               Proyectos
             </Link>
 
-            {/* Spacer */}
             <div className="flex-1"></div>
 
             <button
@@ -92,7 +101,6 @@ export default function Layout() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col">
-        {/* Navbar móvil */}
         <header className="bg-white shadow-md p-4 flex justify-between items-center md:hidden">
           <h1 className="text-xl font-semibold">Mi Panel</h1>
           <button onClick={() => setOpen(true)}>
@@ -100,7 +108,6 @@ export default function Layout() {
           </button>
         </header>
 
-        {/* Contenido de las páginas */}
         <main className="p-6 flex-1 overflow-auto">
           <Outlet />
         </main>
