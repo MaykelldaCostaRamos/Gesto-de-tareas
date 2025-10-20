@@ -1,6 +1,7 @@
 // pages/LandingPage.jsx
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   CheckCircleIcon,
   ClipboardDocumentIcon,
@@ -26,18 +27,18 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="space-x-4"
         >
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition"
           >
             Login
-          </a>
-          <a
-            href="/register"
+          </Link>
+          <Link
+            to="/register"
             className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
           >
             Registro
-          </a>
+          </Link>
         </motion.div>
       </header>
 
@@ -56,14 +57,14 @@ export default function LandingPage() {
           <p className="text-gray-600 text-lg">
             Mantén tus tareas bajo control, visualiza tu progreso y aumenta tu productividad.
           </p>
-          <motion.a
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            href="/register"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-          >
-            Empieza ahora
-          </motion.a>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              to="/register"
+              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Empieza ahora
+            </Link>
+          </motion.div>
         </motion.div>
 
         <motion.div
@@ -81,7 +82,6 @@ export default function LandingPage() {
           </motion.div>
         </motion.div>
       </section>
-
 
       {/* Features Section */}
       <section className="py-16 px-8 lg:px-24 bg-white">
@@ -127,9 +127,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-
-
-
       {/* CTA Section */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
@@ -139,14 +136,14 @@ export default function LandingPage() {
         className="py-12 bg-blue-50 text-center"
       >
         <h3 className="text-3xl font-bold mb-4">¿Listo para organizar tus tareas?</h3>
-        <motion.a
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          href="/register"
-          className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-        >
-          Regístrate ahora
-        </motion.a>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Link
+            to="/register"
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            Regístrate ahora
+          </Link>
+        </motion.div>
       </motion.section>
 
       {/* Footer */}

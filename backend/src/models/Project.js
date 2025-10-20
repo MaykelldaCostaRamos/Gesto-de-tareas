@@ -7,7 +7,8 @@ const projectSchema = new mongoose.Schema({
     trim: true
   },
   description: {
-    type: String
+    type: String,
+    default: ""
   },
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,

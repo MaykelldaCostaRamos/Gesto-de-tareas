@@ -1,24 +1,19 @@
 import express from "express";
-import { verifyToken } from "../middleware/verifyToken.js";
 import {
-  createProject,
   getProjects,
+  getProject,
+  createProject,
   updateProject,
   deleteProject,
 } from "../controllers/projectController.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// Crear un nuevo proyecto
 router.post("/", verifyToken, createProject);
-
-// Obtener todos los proyectos del usuario autenticado
 router.get("/", verifyToken, getProjects);
-
-// Actualizar un proyecto por ID
+router.get("/:id", verifyToken, getProject);
 router.put("/:id", verifyToken, updateProject);
-
-// Eliminar un proyecto por ID
 router.delete("/:id", verifyToken, deleteProject);
 
 export default router;

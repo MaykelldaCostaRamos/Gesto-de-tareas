@@ -1,19 +1,22 @@
 import express from "express";
-import { createTask, getTasksByProject, updateTask, deleteTask } from "../controllers/taskController.js";
+import {
+  createTask,
+  getTasksByProject,
+  updateTask,
+  deleteTask,
+  toggleTaskState,
+} from "../controllers/taskController.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// Crear tarea
-router.post("/", verifyToken, createTask);
-
-// Obtener tareas de un proyecto
+// CRUD de tareas
+router.post("/:projectId", verifyToken, createTask);
 router.get("/:projectId", verifyToken, getTasksByProject);
-
-// Actualizar tarea
 router.put("/:id", verifyToken, updateTask);
-
-// Eliminar tarea
 router.delete("/:id", verifyToken, deleteTask);
+
+// Alternar estado
+router.put("/:id/toggle", verifyToken, toggleTaskState);
 
 export default router;
