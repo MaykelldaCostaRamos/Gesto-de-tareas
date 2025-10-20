@@ -15,7 +15,10 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors()); // Permite peticiones desde el frontend
+app.use(cors({ // Permite peticiones desde el frontend
+  origin: "http://localhost:5173",
+  credentials: true
+})); 
 app.use(express.json()); // Para leer JSON en las solicitudes
 
 
