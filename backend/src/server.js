@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import cookieParser from "cookie-parser";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -20,6 +21,8 @@ app.use(cors({ // Permite peticiones desde el frontend
   credentials: true
 })); 
 app.use(express.json()); // Para leer JSON en las solicitudes
+
+app.use(cookieParser()); // Para almacenar cookie
 
 
 // Rutas de autenticación

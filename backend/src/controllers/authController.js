@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-// Funciones de validación internas
+// Validaciones internas
 const validateEmail = (email) => /^\S+@\S+\.\S+$/.test(email);
 const validatePassword = (password) => password.length >= 6;
 const validateName = (name) => name && name.trim() !== "";
@@ -12,19 +12,14 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validaciones
     if (!validateName(name) || !validateEmail(email) || !validatePassword(password)) {
       return res.status(400).json({ message: "Datos inválidos o incompletos" });
     }
 
-    // Verificar si el usuario ya existe
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "El usuario ya está registrado" });
 
-    // Hashear contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Crear usuario
     const newUser = await User.create({ name, email, password: hashedPassword });
 
     res.status(201).json({
@@ -37,7 +32,7 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// Login usuario
+// Login usuario con JWT en cookie
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,20 +49,31 @@ export const loginUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.json({
-      message: "Login exitoso",
-      token,
+    // Enviar token en cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000, // 24 horas
     });
+
+    res.json({ message: "Login exitoso" });
   } catch (error) {
     console.error("Error en loginUser:", error.message);
     res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
   }
 };
 
-//  Obtener perfil
+// Logout usuario
+export const logoutUser = (req, res) => {
+  res.clearCookie("token", { httpOnly: true, sameSite: "lax" });
+  res.json({ message: "Logout exitoso" });
+};
+
+// Obtener perfil (protegido con verifyToken)
 export const getProfile = async (req, res) => {
   try {
-    const { userId, name } = req.user; // viene del middleware verifyToken
+    const { userId, name } = req.user; // viene de verifyToken
     res.json({ userId, name });
   } catch (error) {
     console.error("Error en getProfile:", error.message);
