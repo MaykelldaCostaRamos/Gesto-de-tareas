@@ -17,7 +17,7 @@ connectDB();
 
 // Middleware
 app.use(cors({ // Permite peticiones desde el frontend
-  origin: "https://gestortareas-es.vercel.app/",
+  origin: process.env.VITE_API_URL,
   credentials: true
 })); 
 app.use(express.json()); // Para leer JSON en las solicitudes
