@@ -22,7 +22,7 @@ connectDB();
 // Middlewares
 // ==========================
 app.use(cors({
-  origin: process.env.VITE_API_URL || "*", // cambiar "*" en producción
+  origin: "https://gestor-de-tareas-frontend.onrender.com", // cambiar "*" en producción
   credentials: true
 }));
 app.use(express.json());      // Para recibir JSON
