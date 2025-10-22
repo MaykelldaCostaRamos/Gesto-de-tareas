@@ -48,7 +48,7 @@ app.use("/api/task", taskRoutes);
 // Servir frontend en producción
 // ==========================
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../dist");
+  const frontendPath = path.join(__dirname, "../../dist");
 
   // Servir todos los archivos estáticos
   app.use("/app", express.static(frontendPath));
