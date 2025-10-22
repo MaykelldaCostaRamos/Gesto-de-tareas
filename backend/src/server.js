@@ -1,15 +1,22 @@
+// server.js
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
-// Cargar variables de entorno
+// ==========================
+// Configurar entorno y paths
+// ==========================
 dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -22,18 +29,33 @@ connectDB();
 // Middlewares
 // ==========================
 app.use(cors({
-  origin: "https://gestor-de-tareas-frontend.onrender.com", 
+  origin: process.env.NODE_ENV === "production"
+    ? "https://gestor-de-tareas-frontend.onrender.com" // URL real del frontend
+    : "http://localhost:5173", // Vite dev server en local
   credentials: true
 }));
-app.use(express.json());      // Para recibir JSON
-app.use(cookieParser());      // Para manejar cookies
+app.use(express.json());
+app.use(cookieParser());
 
 // ==========================
-// Rutas
+// Rutas API
 // ==========================
 app.use("/api/auth", authRoutes);
 app.use("/api/project", projectRoutes);
 app.use("/api/task", taskRoutes);
+
+// ==========================
+// Servir frontend en producción
+// ==========================
+if (process.env.NODE_ENV === "production") {
+  // Carpeta donde está el build de React
+  app.use(express.static(path.join(__dirname, "dist")));
+
+  // Cualquier otra ruta devuelve index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+  });
+}
 
 // ==========================
 // Ruta por defecto
