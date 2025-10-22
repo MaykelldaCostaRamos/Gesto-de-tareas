@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === "production") {
   app.use("/app", express.static(path.join(__dirname, "dist")));
 
   // Cualquier otra ruta bajo /app devuelve index.html
-  app.get("*", (req, res) => {
+  app.get("/app/*", (req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
