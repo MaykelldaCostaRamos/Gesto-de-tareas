@@ -54,26 +54,24 @@ export default function Register() {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validate()) return;
+    e.preventDefault();
+    if (!validate()) return;
 
-  try {
-    const userData = await registerUser({name, email, password });
-    console.log("Registro exitoso:", userData);
-    navigate("/Login"); // Redirigir al dashboard, guardar token, etc.
-  } catch (err) {
-    setError(err.response?.data?.message || "Error al registrarse");
-  }
-};
+    try {
+      const userData = await registerUser({ name, email, password });
+      console.log("Registro exitoso:", userData);
+      navigate("/app/login"); // Apunta a la ruta bajo /app
+    } catch (err) {
+      setError(err.response?.data?.message || "Error al registrarse");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4">
-      {/* Logo */}
       <div className="mt-6 mb-6">
         <h1 className="text-3xl font-bold text-blue-600">Gestor de Tareas</h1>
       </div>
 
-      {/* Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -146,12 +144,12 @@ export default function Register() {
         <div className="text-center mt-4 text-gray-500 text-sm space-y-1">
           <p>
             ¿Ya tienes cuenta?{" "}
-            <a href="/login" className="text-blue-600 font-semibold hover:underline">
+            <a href="/app/login" className="text-blue-600 font-semibold hover:underline">
               Inicia sesión
             </a>
           </p>
           <p>
-            <a href="/" className="text-blue-600 hover:underline">
+            <a href="/app" className="text-blue-600 hover:underline">
               Volver a inicio
             </a>
           </p>

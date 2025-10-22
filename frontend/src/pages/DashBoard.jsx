@@ -16,7 +16,6 @@ export default function Dashboard() {
     setLoading(true);
     try {
       const data = await getProjects();
-      await new Promise(r => setTimeout(r, 1000));
       setProyectos(data.projects || []);
     } catch (err) {
       console.error(err);
@@ -87,7 +86,6 @@ export default function Dashboard() {
       );
     }
 
-
   return (
     <div className="space-y-10 p-6">
       {/* Header y creación de proyecto */}
@@ -126,7 +124,7 @@ export default function Dashboard() {
             key={project._id}
             className="p-4 bg-white shadow rounded-2xl hover:shadow-xl transition transform hover:scale-105 flex flex-col justify-between"
           >
-            <Link to={`/project/${project._id}`} className="flex-1">
+            <Link to={`/app/project/${project._id}`} className="flex-1">
               <h3 className="font-bold text-lg">{project.name}</h3>
               {project.description && (
                 <p className="text-gray-500 mt-1 text-sm">{project.description}</p>

@@ -11,7 +11,7 @@ export default function Layout() {
       // Llamada al backend para limpiar cookie
       await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include", // muy importante para enviar cookie
+        credentials: "include",
       });
 
       // Redirigir a pagina inicio
@@ -19,13 +19,13 @@ export default function Layout() {
     } catch (error) {
       console.error("Error al hacer logout:", error);
     } finally {
-      setOpen(false); // cerrar drawer si estaba abierto
+      setOpen(false);
     }
   };
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      {/* Sidebar para escritorio */}
+      {/* Sidebar escritorio */}
       <aside className="hidden md:flex w-64 bg-white shadow-md p-6 flex-col">
         <h2 className="text-xl font-bold mb-6">Gestor de Tareas</h2>
         <nav className="space-y-3 flex-1 flex flex-col">
@@ -36,7 +36,7 @@ export default function Layout() {
             Dashboard
           </Link>
           <Link
-            to="/project/1"
+            to="/project"
             className="block px-4 py-2 rounded hover:bg-blue-100 transition"
           >
             Proyectos
@@ -53,7 +53,7 @@ export default function Layout() {
         </nav>
       </aside>
 
-      {/* Drawer para móvil */}
+      {/* Drawer móvil */}
       <div
         className={`fixed inset-0 z-40 md:hidden transition-transform transform ${
           open ? "translate-x-0" : "-translate-x-full"
@@ -80,7 +80,7 @@ export default function Layout() {
               Dashboard
             </Link>
             <Link
-              to="/project/1"
+              to="/project"
               className="block px-4 py-2 rounded hover:bg-blue-100 transition"
               onClick={() => setOpen(false)}
             >

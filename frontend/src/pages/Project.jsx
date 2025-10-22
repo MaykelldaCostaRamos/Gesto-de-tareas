@@ -14,11 +14,10 @@ export default function Project() {
   const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
   const [tareas, setTareas] = useState([]);
   const [nuevaTarea, setNuevaTarea] = useState("");
-  const [nuevaDescripcion, setNuevaDescripcion] = useState(""); // <-- NUEVO
+  const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargar proyectos para el dropdown
   const fetchProjects = async () => {
     setLoading(true);
     setError(null);
@@ -36,7 +35,6 @@ export default function Project() {
     }
   };
 
-  // Cargar proyecto y tareas del proyecto seleccionado
   const fetchProjectDetails = async (projectId) => {
     if (!projectId) return;
     setLoading(true);
@@ -47,11 +45,7 @@ export default function Project() {
       setTareas(data.tareas || []);
     } catch (err) {
       console.error(err);
-      if (err.response?.data?.message) {
-        setError(`Error: ${err.response.data.message}`);
-      } else {
-        setError("No se pudo cargar el proyecto.");
-      }
+      setError(err.response?.data?.message || "No se pudo cargar el proyecto.");
       setProyectoSeleccionado(null);
       setTareas([]);
     } finally {
@@ -63,25 +57,20 @@ export default function Project() {
     fetchProjects();
   }, []);
 
-  // CRUD de tareas
   const agregarTarea = async () => {
     if (!nuevaTarea.trim() || !proyectoSeleccionado) return;
     try {
       const tarea = await createTask(
         proyectoSeleccionado._id,
         nuevaTarea.trim(),
-        nuevaDescripcion.trim() // <-- DESCRIPCION
+        nuevaDescripcion.trim()
       );
       setTareas((prev) => [...prev, tarea]);
       setNuevaTarea("");
-      setNuevaDescripcion(""); // <-- RESET
+      setNuevaDescripcion("");
     } catch (err) {
       console.error(err);
-      if (err.response?.data?.message) {
-        setError(`Error: ${err.response.data.message}`);
-      } else {
-        setError("No se pudo crear la tarea.");
-      }
+      setError(err.response?.data?.message || "No se pudo crear la tarea.");
     }
   };
 
@@ -109,15 +98,9 @@ export default function Project() {
     const tarea = tareas.find((t) => t._id === taskId);
     const nuevoTitulo = prompt("Nuevo título de la tarea:", tarea.title);
     if (nuevoTitulo === null) return;
-    const nuevaDesc = prompt(
-      "Nueva descripción (opcional):",
-      tarea.description || ""
-    );
+    const nuevaDesc = prompt("Nueva descripción (opcional):", tarea.description || "");
     try {
-      const updated = await updateTask(taskId, {
-        title: nuevoTitulo,
-        description: nuevaDesc,
-      });
+      const updated = await updateTask(taskId, { title: nuevoTitulo, description: nuevaDesc });
       setTareas((prev) => prev.map((t) => (t._id === taskId ? updated : t)));
     } catch (err) {
       console.error(err);
@@ -129,7 +112,6 @@ export default function Project() {
 
   return (
     <div className="space-y-6 p-6">
-      {/* Selector de proyecto */}
       <div className="mb-4">
         {proyectos.length === 0 ? (
           <p className="text-gray-500">Sin proyectos existentes</p>
@@ -140,9 +122,7 @@ export default function Project() {
             className="border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {proyectos.map((p) => (
-              <option key={p._id} value={p._id}>
-                {p.name}
-              </option>
+              <option key={p._id} value={p._id}>{p.name}</option>
             ))}
           </select>
         )}
@@ -152,14 +132,9 @@ export default function Project() {
 
       {proyectoSeleccionado && (
         <>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-            {proyectoSeleccionado.name}
-          </h2>
-          {proyectoSeleccionado.description && (
-            <p className="text-gray-500 mb-4">{proyectoSeleccionado.description}</p>
-          )}
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">{proyectoSeleccionado.name}</h2>
+          {proyectoSeleccionado.description && <p className="text-gray-500 mb-4">{proyectoSeleccionado.description}</p>}
 
-          {/* Nueva tarea */}
           <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
             <input
               type="text"
@@ -183,13 +158,9 @@ export default function Project() {
             </button>
           </div>
 
-          {/* Listado de tareas */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             {tareas.map((tarea) => (
-              <div
-                key={tarea._id}
-                className="p-4 sm:p-5 rounded-2xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between transition transform hover:scale-105"
-              >
+              <div key={tarea._id} className="p-4 sm:p-5 rounded-2xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between transition transform hover:scale-105">
                 <div className="flex flex-col flex-1 mb-2 sm:mb-0">
                   <div className="flex items-start sm:items-center space-x-3">
                     {tarea.status === "completada" ? (
@@ -197,45 +168,23 @@ export default function Project() {
                     ) : (
                       <PencilSquareIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                     )}
-                    <span
-                      className={
-                        tarea.status === "completada"
-                          ? "line-through font-semibold break-words"
-                          : "font-semibold break-words"
-                      }
-                    >
+                    <span className={tarea.status === "completada" ? "line-through font-semibold break-words" : "font-semibold break-words"}>
                       {tarea.title}
                     </span>
                   </div>
-                  {tarea.description && (
-                    <p className="text-gray-500 text-sm mt-1">{tarea.description}</p>
-                  )}
+                  {tarea.description && <p className="text-gray-500 text-sm mt-1">{tarea.description}</p>}
                 </div>
 
                 <div className="flex space-x-2 mt-2 sm:mt-0">
-                  <button
-                    onClick={() => editarTarea(tarea._id)}
-                    className="p-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg transition"
-                  >
+                  <button onClick={() => editarTarea(tarea._id)} className="p-2 bg-yellow-400 hover:bg-yellow-500 rounded-lg transition">
                     <PencilSquareIcon className="w-4 h-4 text-white" />
                   </button>
-                  <button
-                    onClick={() => eliminarTarea(tarea._id)}
-                    className="p-2 bg-red-500 hover:bg-red-600 rounded-lg transition"
-                  >
+                  <button onClick={() => eliminarTarea(tarea._id)} className="p-2 bg-red-500 hover:bg-red-600 rounded-lg transition">
                     <TrashIcon className="w-4 h-4 text-white" />
                   </button>
-                  <button
-                      onClick={() => toggleEstado(tarea._id)}
-                      className={`px-3 py-1 rounded-lg text-white font-medium transition ${
-                        tarea.status === "completada"
-                          ? "bg-green-400 hover:bg-green-500"
-                          : "bg-yellow-400 hover:bg-yellow-500"
-                      }`}
-                    >
-                      {tarea.status === "completada" ? "Completada" : "Pendiente"}
-                    </button>
-
+                  <button onClick={() => toggleEstado(tarea._id)} className={`px-3 py-1 rounded-lg text-white font-medium transition ${tarea.status === "completada" ? "bg-green-400 hover:bg-green-500" : "bg-yellow-400 hover:bg-yellow-500"}`}>
+                    {tarea.status === "completada" ? "Completada" : "Pendiente"}
+                  </button>
                 </div>
               </div>
             ))}
