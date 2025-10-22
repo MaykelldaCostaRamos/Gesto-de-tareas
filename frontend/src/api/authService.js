@@ -9,7 +9,7 @@ export const registerUser = async (data) => {
 // Login devuelve token
 // authService.js
 export const loginUser = async ({ email, password }) => {
-  const res = await fetch("/api/auth/login", {  // <-- aquí se apunta al backend
+  const res = await fetch("/auth/login", {  // <-- aquí se apunta al backend
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
