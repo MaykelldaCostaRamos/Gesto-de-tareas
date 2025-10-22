@@ -3,10 +3,6 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import path from "path";
-import { fileURLToPath } from "url";
-
-import { existsSync } from 'fs';
 
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -14,11 +10,9 @@ import projectRoutes from "./routes/projectRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
 // ==========================
-// Configurar entorno y paths
+// Configurar entorno
 // ==========================
 dotenv.config();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -45,26 +39,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/project", projectRoutes);
 app.use("/api/task", taskRoutes);
-
-// ==========================
-// Servir frontend en producción
-// ==========================
-if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../../dist");
-
-  
-  console.log("🔍 __dirname:", __dirname);
-console.log("🔍 frontendPath:", frontendPath);
-console.log("🔍 Existe?:", existsSync(frontendPath));
-
-  // Servir todos los archivos estáticos
-  app.use("/app", express.static(frontendPath));
-
-  // Catch-all para React (todas las rutas que empiezan con /app)
-  app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
-}
 
 // ==========================
 // Ruta raíz del backend
