@@ -7,7 +7,7 @@ const validateEmail = (email) => /^\S+@\S+\.\S+$/.test(email);
 const validatePassword = (password) => password.length >= 6;
 const validateName = (name) => name && name.trim() !== "";
 
-// Registrar usuario
+// ===== REGISTRO =====
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -17,7 +17,9 @@ export const registerUser = async (req, res) => {
     }
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "El usuario ya está registrado" });
+    if (existingUser) {
+      return res.status(400).json({ message: "El usuario ya está registrado" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ name, email, password: hashedPassword });
@@ -28,20 +30,24 @@ export const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error en registerUser:", error.message);
-    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
-// Login usuario con JWT en cookie
+// ===== LOGIN =====
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Credenciales inválidas" });
+    if (!isMatch) {
+      return res.status(400).json({ message: "Credenciales inválidas" });
+    }
 
     const token = jwt.sign(
       { userId: user._id, name: user.name },
@@ -49,34 +55,39 @@ export const loginUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    // Enviar token en cookie
+    // 🔒 Configuración ideal para Render (producción)
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: true,       // Render usa HTTPS
+      sameSite: "none",   // Permite cookies cross-domain
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
     });
 
     res.json({ message: "Login exitoso" });
   } catch (error) {
     console.error("Error en loginUser:", error.message);
-    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
-// Logout usuario
+// ===== LOGOUT =====
 export const logoutUser = (req, res) => {
-  res.clearCookie("token", { httpOnly: true, sameSite: "lax" });
+  // Limpia cookie correctamente también en producción
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
   res.json({ message: "Logout exitoso" });
 };
 
-// Obtener perfil (protegido con verifyToken)
+// ===== PERFIL =====
 export const getProfile = async (req, res) => {
   try {
-    const { userId, name } = req.user; // viene de verifyToken
+    const { userId, name } = req.user;
     res.json({ userId, name });
   } catch (error) {
     console.error("Error en getProfile:", error.message);
-    res.status(500).json({ message: "Ocurrió un error, inténtalo más tarde" });
+    res.status(500).json({ message: "Error interno del servidor" });
   }
 };
