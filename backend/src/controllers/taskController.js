@@ -7,7 +7,8 @@ const cleanText = (text) => (typeof text === "string" ? text.trim() : "");
 // Crear tarea
 export const createTask = async (req, res) => {
   try {
-    const { title, description, projectId } = req.body;
+    const { title, description } = req.body;
+    const { projectId } = req.params;
 
     if (!title || !projectId) {
       return res.status(400).json({ success: false, message: "Título y proyecto son obligatorios" });
