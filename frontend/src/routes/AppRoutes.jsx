@@ -8,7 +8,7 @@ import Project from "../pages/Project.jsx";
 
 export default function AppRoutes() {
   return (
-    <Router basename="/app">
+    <Router>
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<LandingPage />} />
