@@ -54,9 +54,9 @@ if (process.env.NODE_ENV === "production") {
   app.use("/app", express.static(frontendPath));
 
   // Catch-all para React (todas las rutas que empiezan con /app)
-  app.get("/app*", (req, res) => {
-    res.sendFile(path.join(frontendPath, "index.html"));
-  });
+  app.get(/^\/app(\/.*)?$/, (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 }
 
 // ==========================
