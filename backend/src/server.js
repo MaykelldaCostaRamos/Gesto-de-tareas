@@ -49,7 +49,7 @@ app.use("/api/task", taskRoutes);
 // ==========================
 if (process.env.NODE_ENV === "production") {
   // Carpeta donde está el build de React
-  app.use(express.static(path.join(__dirname, "dist")));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   // Cualquier otra ruta devuelve index.html
   app.get("*", (req, res) => {
