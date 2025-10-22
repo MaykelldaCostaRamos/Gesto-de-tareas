@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 
+import { existsSync } from 'fs';
+
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
@@ -49,9 +51,11 @@ app.use("/api/task", taskRoutes);
 // ==========================
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../dist");
+
+  
   console.log("🔍 __dirname:", __dirname);
 console.log("🔍 frontendPath:", frontendPath);
-console.log("🔍 Existe?:", require('fs').existsSync(frontendPath));
+console.log("🔍 Existe?:", existsSync(frontendPath));
 
   // Servir todos los archivos estáticos
   app.use("/app", express.static(frontendPath));
