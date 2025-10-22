@@ -30,8 +30,8 @@ connectDB();
 // ==========================
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
-    ? "https://gestor-de-tareas-frontend.onrender.com" // URL real del frontend
-    : "http://localhost:5173", // Vite dev server en local
+    ? "https://gestor-de-tareas-frontend.onrender.com"
+    : "http://localhost:5173",
   credentials: true
 }));
 app.use(express.json());
@@ -46,14 +46,21 @@ app.use("/api/task", taskRoutes);
 
 // ==========================
 // Servir frontend en producción
+// ==========================
 if (process.env.NODE_ENV === "production") {
-  // Servir todos los archivos estáticos de React (dist dentro del backend)
-  app.use("/app", express.static(path.join(__dirname, "dist")));
+  const frontendPath = path.join(__dirname, "../dist");
+
+  // Servir todos los archivos estáticos
+  app.use("/app", express.static(frontendPath));
+
+  // Catch-all para React (todas las rutas que empiezan con /app)
+  app.get("/app/*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
 }
 
-
 // ==========================
-// Ruta por defecto
+// Ruta raíz del backend
 // ==========================
 app.get("/", (req, res) => {
   res.send("Backend funcionando correctamente");
