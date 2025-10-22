@@ -25,9 +25,7 @@ connectDB();
 // Middlewares
 // ==========================
 app.use(cors({
-  origin: process.env.NODE_ENV === "production"
-    ? "https://gestor-de-tareas-frontend.onrender.com"
-    : "http://localhost:5173",
+  origin: "https://gestor-de-tareas-frontend.onrender.com",
   credentials: true
 }));
 app.use(express.json());
