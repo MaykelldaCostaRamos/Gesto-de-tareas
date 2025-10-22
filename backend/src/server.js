@@ -46,16 +46,16 @@ app.use("/api/task", taskRoutes);
 
 // ==========================
 // Servir frontend en producción
-// ==========================
 if (process.env.NODE_ENV === "production") {
-  // Servir todos los archivos estáticos de React (dist)
-  app.use(express.static(path.join(__dirname, "dist")));
+  // Servir todos los archivos estáticos de React (dist dentro del backend)
+  app.use("/app", express.static(path.join(__dirname, "dist")));
 
-  // Todas las rutas que empiecen con /app devuelven index.html
+  // Cualquier otra ruta bajo /app devuelve index.html
   app.get("/app/*", (req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
+
 
 // ==========================
 // Ruta por defecto
