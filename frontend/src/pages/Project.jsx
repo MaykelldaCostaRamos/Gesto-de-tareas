@@ -168,7 +168,7 @@ export default function Project() {
                     ) : (
                       <PencilSquareIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
                     )}
-                    <span className={tarea.status === "completada" ? "line-through font-semibold break-words" : "font-semibold break-words"}>
+                    <span className={tarea.status === "completada" ? "line-through font-semibold" : "font-semibold"}>
                       {tarea.title}
                     </span>
                   </div>
