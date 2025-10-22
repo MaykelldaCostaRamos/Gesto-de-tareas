@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Cualquier otra ruta devuelve index.html
   app.get("/app", (req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "dist", "../frontend/dist/index.html"));
   });
 }
 
