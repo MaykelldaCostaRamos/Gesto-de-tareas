@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://gestor-de-tareas-frontend.onrender.com/api", 
+  baseURL: "https://gesto-de-tareas-frontend.onrender.com/api", 
   withCredentials: true, 
   headers: {
     "Content-Type": "application/json",
