@@ -36,7 +36,7 @@ export const deleteProject = async (projectId) => {
 
 // Crear nueva tarea en un proyecto
 export const createTask = async (projectId, title, description = "") => {
-  const response = await api.post(`/task/`, { title, description, projectId });
+  const response = await api.post(`/task/${projectId}`, { title, description});
   return response.data.data;
 };
 
