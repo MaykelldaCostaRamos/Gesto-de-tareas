@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import api from "../api/axios";
+import { logoutUser } from "../api/authService";
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+ const handleLogout = async () => {
   try {
-    await api.post("/auth/layout");
+    await logoutUser(); // axios ya apunta al backend
     navigate("/");
   } catch (error) {
     console.error("Error al hacer logout:", error);
   } finally {
     setOpen(false);
   }
+
 };
 
   return (
