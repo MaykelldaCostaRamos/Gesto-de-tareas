@@ -1,15 +1,14 @@
 import api from "./axios";
 
-// Registro sigue igual, no devuelve token
+// Registro (no devuelve token)
 export const registerUser = async (data) => {
   const response = await api.post("/auth/register", data);
   return response.data;
 };
 
 // Login devuelve token
-// authService.js
 export const loginUser = async ({ email, password }) => {
-  const res = await fetch("/auth/login", {  // <-- aquí se apunta al backend
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -23,7 +22,6 @@ export const loginUser = async ({ email, password }) => {
 
   return await res.json();
 };
-
 
 export const logoutUser = async () => {
   const response = await api.post("/auth/logout");

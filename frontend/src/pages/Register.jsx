@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { registerUser } from "../api/authService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -60,7 +60,7 @@ export default function Register() {
     try {
       const userData = await registerUser({ name, email, password });
       console.log("Registro exitoso:", userData);
-      navigate("/app/login"); // Apunta a la ruta bajo /app
+      navigate("/login"); 
     } catch (err) {
       setError(err.response?.data?.message || "Error al registrarse");
     }
@@ -88,7 +88,7 @@ export default function Register() {
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {setName(e.target.value); setError("");}}
               placeholder="Tu nombre"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -100,7 +100,7 @@ export default function Register() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {setEmail(e.target.value); setError("");}}
               placeholder="tucorreo@ejemplo.com"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -112,7 +112,7 @@ export default function Register() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {setPassword(e.target.value); setError("");}}
               placeholder="********"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -124,7 +124,7 @@ export default function Register() {
             <input
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {setConfirmPassword(e.target.value); setError("");}}
               placeholder="********"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -144,14 +144,10 @@ export default function Register() {
         <div className="text-center mt-4 text-gray-500 text-sm space-y-1">
           <p>
             ¿Ya tienes cuenta?{" "}
-            <a href="/app/login" className="text-blue-600 font-semibold hover:underline">
-              Inicia sesión
-            </a>
+            <Link to='/login' className="text-blue-600 font-semibold hover:underline"> Inicia sesión </Link>
           </p>
           <p>
-            <a href="/app" className="text-blue-600 hover:underline">
-              Volver a inicio
-            </a>
+            <Link to='/' className="text-blue-600 hover:underline"> Volver a inicio </Link>             
           </p>
         </div>
       </motion.div>
