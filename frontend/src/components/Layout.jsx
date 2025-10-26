@@ -9,7 +9,7 @@ export default function Layout() {
 
   const handleLogout = async () => {
   try {
-    await api.post("/auth/logout");
+    await api.post("/auth/layout");
     navigate("/");
   } catch (error) {
     console.error("Error al hacer logout:", error);

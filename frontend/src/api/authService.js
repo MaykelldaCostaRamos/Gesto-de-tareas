@@ -24,12 +24,12 @@ export const loginUser = async ({ email, password }) => {
 };
 
 export const logoutUser = async () => {
-  const response = await api.post("/auth/logout");
+  const response = await api.post("/api/auth/logout");
   console.log("Saliendo de la APP: ", response.data);
   return response.data;
 };
 
 export const getProfile = async () => {
-  const response = await api.get("/auth/profile");
+  const response = await api.get("/api/auth/profile");
   return response.data;
 };
