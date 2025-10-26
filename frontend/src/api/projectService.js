@@ -36,24 +36,24 @@ export const deleteProject = async (projectId) => {
 
 // Crear nueva tarea en un proyecto
 export const createTask = async (projectId, title, description = "") => {
-  const response = await api.post(`/task/${projectId}`, { title, description});
+  const response = await api.post(`/api/task/${projectId}`, { title, description});
   return response.data.data;
 };
 
 // Cambiar estado de una tarea (pendiente <-> completada)
 export const toggleTaskState = async (taskId) => {
-  const response = await api.put(`/task/${taskId}/toggle`);
+  const response = await api.put(`/api/task/${taskId}/toggle`);
   return response.data.data;
 };
 
 // Actualizar tarea por ID
 export const updateTask = async (taskId, data) => {
-  const response = await api.put(`/task/${taskId}`, data);
+  const response = await api.put(`/api/task/${taskId}`, data);
   return response.data.data;
 };
 
 // Eliminar tarea por ID
 export const deleteTask = async (taskId) => {
-  const response = await api.delete(`/task/${taskId}`);
+  const response = await api.delete(`/api/task/${taskId}`);
   return response.data;
 };

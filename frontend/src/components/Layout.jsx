@@ -9,7 +9,7 @@ export default function Layout() {
   const handleLogout = async () => {
     try {
       // Llamada al backend para limpiar cookie
-      await fetch("/api/auth/logout", {
+      await fetch("/auth/logout", {
         method: "POST",
         credentials: "include",
       });

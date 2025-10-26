@@ -18,6 +18,7 @@ export default function AppRoutes() {
         {/* Rutas privadas */}
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/project" element={<Project />} />
           <Route path="/project/:id" element={<Project />} />
         </Route>
       </Routes>
