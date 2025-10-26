@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import api from "../api/axios";
 
 export default function Layout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
- const handleLogout = async () => {
-  try {
-    const response = await api.post("/auth/logout");
-    console.log("Saliendo de la APP: ", response.data);
-    navigate("/");
-  } catch (error) {
-    console.error("Error al hacer logout:", error);
-  } finally {
-    setOpen(false);
-  }
-};;
+  const handleLogout = async () => {
+    try {
+      // Llamada al backend para limpiar cookie
+      await fetch("/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      // Redirigir a pagina inicio
+      navigate("/");
+    } catch (error) {
+      console.error("Error al hacer logout:", error);
+    } finally {
+      setOpen(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex bg-gray-100">
