@@ -26,7 +26,7 @@ connectDB();
 // ==========================
 app.use(cors({
   origin: [
-    "https://gestor-de-tareas-es.vercel.app", // frontend en Vercel
+    "https://gestordetareas-es.vercel.app/", // frontend en Vercel
     "http://localhost:5173"                    // frontend local
   ],
   credentials: true
