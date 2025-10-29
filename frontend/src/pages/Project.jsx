@@ -18,6 +18,12 @@ export default function Project() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const handleUnauthorized = () => {
+    // Token inválido o expirado
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   const fetchProjects = async () => {
     setLoading(true);
     setError(null);
@@ -29,7 +35,8 @@ export default function Project() {
       }
     } catch (err) {
       console.error(err);
-      setError("No se pudieron cargar los proyectos.");
+      if (err.response?.status === 401) handleUnauthorized();
+      else setError("No se pudieron cargar los proyectos.");
     } finally {
       setLoading(false);
     }
@@ -45,9 +52,12 @@ export default function Project() {
       setTareas(data.tareas || []);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "No se pudo cargar el proyecto.");
-      setProyectoSeleccionado(null);
-      setTareas([]);
+      if (err.response?.status === 401) handleUnauthorized();
+      else {
+        setError(err.response?.data?.message || "No se pudo cargar el proyecto.");
+        setProyectoSeleccionado(null);
+        setTareas([]);
+      }
     } finally {
       setLoading(false);
     }
@@ -70,7 +80,8 @@ export default function Project() {
       setNuevaDescripcion("");
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "No se pudo crear la tarea.");
+      if (err.response?.status === 401) handleUnauthorized();
+      else setError(err.response?.data?.message || "No se pudo crear la tarea.");
     }
   };
 
@@ -80,7 +91,8 @@ export default function Project() {
       setTareas((prev) => prev.map((t) => (t._id === taskId ? updated : t)));
     } catch (err) {
       console.error(err);
-      setError("No se pudo cambiar el estado.");
+      if (err.response?.status === 401) handleUnauthorized();
+      else setError("No se pudo cambiar el estado.");
     }
   };
 
@@ -90,7 +102,8 @@ export default function Project() {
       setTareas((prev) => prev.filter((t) => t._id !== taskId));
     } catch (err) {
       console.error(err);
-      setError("No se pudo eliminar la tarea.");
+      if (err.response?.status === 401) handleUnauthorized();
+      else setError("No se pudo eliminar la tarea.");
     }
   };
 
@@ -104,15 +117,21 @@ export default function Project() {
       setTareas((prev) => prev.map((t) => (t._id === taskId ? updated : t)));
     } catch (err) {
       console.error(err);
-      setError("No se pudo editar la tarea.");
+      if (err.response?.status === 401) handleUnauthorized();
+      else setError("No se pudo editar la tarea.");
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   };
 
   if (loading) return <div className="p-6">Cargando proyecto...</div>;
 
   return (
     <div className="space-y-6 p-6">
-      <div className="mb-4">
+      <div className="flex justify-between items-center mb-4">
         {proyectos.length === 0 ? (
           <p className="text-gray-500">Sin proyectos existentes</p>
         ) : (
@@ -126,6 +145,9 @@ export default function Project() {
             ))}
           </select>
         )}
+        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-semibold">
+          Logout
+        </button>
       </div>
 
       {error && <div className="text-red-500 mb-4">{error}</div>}

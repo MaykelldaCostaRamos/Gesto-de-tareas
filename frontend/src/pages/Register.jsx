@@ -10,6 +10,8 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const validate = () => {
     if (!name.trim()) {
       setError("El nombre es obligatorio");
@@ -51,8 +53,6 @@ export default function Register() {
     return true;
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -60,6 +60,12 @@ export default function Register() {
     try {
       const userData = await registerUser({ name, email, password });
       console.log("Registro exitoso:", userData);
+
+      // ⚡ Redirige al login y opcionalmente limpiar form
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
       navigate("/login"); 
     } catch (err) {
       setError(err.response?.data?.message || "Error al registrarse");
@@ -88,7 +94,7 @@ export default function Register() {
             <input
               type="text"
               value={name}
-              onChange={(e) => {setName(e.target.value); setError("");}}
+              onChange={(e) => { setName(e.target.value); setError(""); }}
               placeholder="Tu nombre"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -100,7 +106,7 @@ export default function Register() {
             <input
               type="email"
               value={email}
-              onChange={(e) => {setEmail(e.target.value); setError("");}}
+              onChange={(e) => { setEmail(e.target.value); setError(""); }}
               placeholder="tucorreo@ejemplo.com"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -112,7 +118,7 @@ export default function Register() {
             <input
               type="password"
               value={password}
-              onChange={(e) => {setPassword(e.target.value); setError("");}}
+              onChange={(e) => { setPassword(e.target.value); setError(""); }}
               placeholder="********"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -124,7 +130,7 @@ export default function Register() {
             <input
               type="password"
               value={confirmPassword}
-              onChange={(e) => {setConfirmPassword(e.target.value); setError("");}}
+              onChange={(e) => { setConfirmPassword(e.target.value); setError(""); }}
               placeholder="********"
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required

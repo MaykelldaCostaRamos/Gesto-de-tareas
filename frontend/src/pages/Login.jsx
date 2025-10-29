@@ -7,7 +7,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
   const validate = () => {
@@ -16,7 +15,8 @@ export default function Login() {
     if (!emailRegex.test(email)) { setError("El email no es válido"); return false; }
     if (!password) { setError("La contraseña es obligatoria"); return false; }
     if (password.length < 6) { setError("La contraseña debe tener al menos 6 caracteres"); return false; }
-    setError(""); return true;
+    setError(""); 
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -27,7 +27,7 @@ export default function Login() {
       await loginUser({ email, password });
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Error al iniciar sesión");
+      setError(err.response?.data?.message || err.message || "Error al iniciar sesión");
     }
   };
 

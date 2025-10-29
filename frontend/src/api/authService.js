@@ -6,7 +6,7 @@ export const registerUser = async (data) => {
   return response.data;
 };
 
-// Login devuelve token
+// Login (devuelve token y se guarda en localStorage)
 export const loginUser = async ({ email, password }) => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
     method: "POST",
@@ -19,17 +19,21 @@ export const loginUser = async ({ email, password }) => {
   if (!res.ok) throw new Error(data.message || "Login failed");
 
   // 👉 Guarda el token en localStorage
-  localStorage.setItem("token", data.token);
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+  }
 
   return data;
 };
 
-
+// Logout (elimina token del localStorage)
 export const logoutUser = async () => {
-  const response = await api.post("/api/auth/logout");
-  return response.data;
+  localStorage.removeItem("token");
+  // Si quieres, también puedes notificar al backend:
+  // await api.post("/api/auth/logout");
 };
 
+// Perfil (usa axios con interceptor que enviará el token automáticamente)
 export const getProfile = async () => {
   const response = await api.get("/api/auth/profile");
   return response.data;

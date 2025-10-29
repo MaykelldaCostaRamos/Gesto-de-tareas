@@ -4,7 +4,7 @@ import api from "./axios";
 
 // Obtener todos los proyectos del usuario
 export const getProjects = async () => {
-  const response = await api.get("/api/project");  
+  const response = await api.get("/api/project");
   return response.data;
 };
 
@@ -36,7 +36,7 @@ export const deleteProject = async (projectId) => {
 
 // Crear nueva tarea en un proyecto
 export const createTask = async (projectId, title, description = "") => {
-  const response = await api.post(`/api/task/${projectId}`, { title, description});
+  const response = await api.post(`/api/task/${projectId}`, { title, description });
   return response.data.data;
 };
 
