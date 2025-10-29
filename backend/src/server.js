@@ -25,8 +25,7 @@ connectDB();
 // Lista de orígenes permitidos
 // ==========================
 const whitelist = [
-  "https://gestordetareas-es.vercel.app",
-  "http://localhost:5173"
+  "https://gestordetareas-es.vercel.app"
 ];
 
 // ==========================
