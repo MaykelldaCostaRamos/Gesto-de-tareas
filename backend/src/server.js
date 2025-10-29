@@ -22,18 +22,30 @@ const app = express();
 connectDB();
 
 // ==========================
+// Lista de orígenes permitidos
+// ==========================
+const whitelist = [
+  "https://gestordetareas-es.vercel.app",
+  "http://localhost:5173"
+];
+
+// ==========================
 // Middlewares
 // ==========================
 app.use(cors({
-  origin: [
-    "https://gestordetareas-es.vercel.app", // frontend en Vercel
-    "http://localhost:5173"                    // frontend local
-  ],
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // permite Postman o requests desde backend
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("No permitido por CORS"));
+    }
+  },
   credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
-
 
 // ==========================
 // Rutas API

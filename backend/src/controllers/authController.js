@@ -61,6 +61,7 @@ export const loginUser = async (req, res) => {
       secure: true,       // Render usa HTTPS
       sameSite: "none",   // Permite cookies cross-domain
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
+      path:"/"
     });
 
     res.json({ message: "Login exitoso" });
@@ -77,6 +78,7 @@ export const logoutUser = (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
+    path:"/"
   });
   res.json({ message: "Logout exitoso" });
 };
