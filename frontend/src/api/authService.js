@@ -8,7 +8,7 @@ export const registerUser = async (data) => {
 
 // Login (devuelve token y se guarda en localStorage)
 export const loginUser = async ({ email, password }) => {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -29,7 +29,7 @@ export const loginUser = async ({ email, password }) => {
 // Logout (elimina token del localStorage)
 export const logoutUser = async () => {
   localStorage.removeItem("token");
-  // Si quieres, también puedes notificar al backend:
+  // Opcional: notificar al backend
   // await api.post("/api/auth/logout");
 };
 
