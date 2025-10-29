@@ -1,19 +1,22 @@
-// backend/middleware/verifyToken.js
 import jwt from "jsonwebtoken";
 
-// Middleware para verificar JWT desde la cookie "token"
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies?.token; // Leer token desde cookie
+  const authHeader = req.headers.authorization;
 
+  if (!authHeader) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1]; // "Bearer <token>"
   if (!token) {
-    return res.status(401).json({ message: "Token faltante" });
+    return res.status(401).json({ message: "Invalid token format" });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Agrega info del usuario a req
+    req.user = decoded;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Token inválido o expirado" });
+    res.status(401).json({ message: "Token not valid or expired" });
   }
 };

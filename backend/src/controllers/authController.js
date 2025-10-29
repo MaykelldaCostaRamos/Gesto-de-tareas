@@ -35,6 +35,7 @@ export const registerUser = async (req, res) => {
 };
 
 // ===== LOGIN =====
+// ===== LOGIN =====
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -55,21 +56,26 @@ export const loginUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    // 🔒 Configuración ideal para Render (producción)
+    // 🔒 Configuración para Render
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,       // Render usa HTTPS
-      sameSite: "none",   // Permite cookies cross-domain
+      secure: true,
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000, // 24 horas
-      path:"/"
+      path: "/",
     });
 
-    res.json({ message: "Login exitoso" });
+    // ✅ También devolvemos el token en el cuerpo
+    res.json({
+      message: "Login exitoso",
+      token,
+    });
   } catch (error) {
     console.error("Error en loginUser:", error.message);
     res.status(500).json({ message: "Error interno del servidor" });
   }
 };
+
 
 // ===== LOGOUT =====
 export const logoutUser = (req, res) => {

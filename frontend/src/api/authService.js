@@ -8,20 +8,22 @@ export const registerUser = async (data) => {
 
 // Login devuelve token
 export const loginUser = async ({ email, password }) => {
-  const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    credentials: "include",
     body: JSON.stringify({ email, password }),
   });
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.message || "Error al iniciar sesión");
-  }
+  const data = await res.json();
 
-  return await res.json();
+  if (!res.ok) throw new Error(data.message || "Login failed");
+
+  // 👉 Guarda el token en localStorage
+  localStorage.setItem("token", data.token);
+
+  return data;
 };
+
 
 export const logoutUser = async () => {
   const response = await api.post("/api/auth/logout");
