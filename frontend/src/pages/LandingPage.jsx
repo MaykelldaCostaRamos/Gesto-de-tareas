@@ -1,11 +1,10 @@
-// pages/LandingPage.jsx
-import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   CheckCircleIcon,
   ClipboardDocumentIcon,
   ClockIcon,
+  PaperClipIcon
 } from "@heroicons/react/24/outline";
 import mockup from '../assets/mockup-nouteam.png';
 
@@ -59,7 +58,7 @@ export default function LandingPage() {
             Mantén tus tareas bajo control, visualiza tu progreso y aumenta tu productividad.
           </p>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <motion.div whileHover={{ scale: 0.95 }} whileTap={{ scale: 0.95 }} className="inline-block">
             <Link
               to="/register"
               className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
@@ -72,22 +71,20 @@ export default function LandingPage() {
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1.0 }}
           viewport={{ once: true }}
-          className="lg:w-1/2 mt-8 lg:mt-0 flex justify-center"
+          className="lg:w-1/2 mt-8 lg:mt-0 flex justify-center drop-shadow-md"
         >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-          >
-            <img src={mockup} className="rounded-2xl shadow-lg w-90 h-auto"/>
-          </motion.div>
+          <div>            
+            <img src={mockup} className="rounded-2xl shadow-xl w-90 h-auto md:w-full contrast-125"/>
+          </div>
         </motion.div>
       </section>
 
       {/* Features Section */}
       <section className="py-16 px-8 lg:px-24 bg-white">
         <h3 className="text-3xl font-bold text-center mb-12">Funcionalidades</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
               icon: ClipboardDocumentIcon,
@@ -107,6 +104,12 @@ export default function LandingPage() {
               title: "Visualiza tu progreso",
               text: "Revisa estadísticas y avances de tus proyectos rápidamente.",
             },
+            {
+              icon: PaperClipIcon,
+              color: "text-cyan-400",
+              title: "Agrega archivos",
+              text: "Adjunta imágenes o documentos PDF a tus proyectos y tareas.",
+            }
           ].map((feature, idx) => (
             <motion.div
               key={idx}
@@ -137,7 +140,7 @@ export default function LandingPage() {
         className="py-12 bg-blue-50 text-center"
       >
         <h3 className="text-3xl font-bold mb-8">¿Listo para organizar tus tareas?</h3>
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <motion.div whileHover={{ scale: 0.95 }} whileTap={{ scale: 0.95 }} className="inline-block">
           <Link
             to="/register"
             className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
