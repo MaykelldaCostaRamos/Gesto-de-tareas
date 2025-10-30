@@ -7,6 +7,7 @@ import {
   ClipboardDocumentIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
+import mockup from '../assets/mockup-nouteam.png';
 
 export default function LandingPage() {
   return (
@@ -76,9 +77,8 @@ export default function LandingPage() {
         >
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="w-80 h-80 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold shadow-lg"
           >
-            Mockup App
+            <img src={mockup} className="rounded-2xl shadow-lg w-90 h-auto"/>
           </motion.div>
         </motion.div>
       </section>
