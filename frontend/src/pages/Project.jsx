@@ -122,11 +122,6 @@ export default function Project() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-  };
-
   if (loading) return <div className="p-6">Cargando proyecto...</div>;
 
   return (
@@ -145,9 +140,6 @@ export default function Project() {
             ))}
           </select>
         )}
-        <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-semibold">
-          Logout
-        </button>
       </div>
 
       {error && <div className="text-red-500 mb-4">{error}</div>}
