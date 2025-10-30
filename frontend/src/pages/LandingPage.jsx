@@ -20,7 +20,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6 }}
           className="text-2xl font-bold text-blue-600"
         >
-          Gestor de Tareas
+          Nou<span className="font-light">team</span>
         </motion.h1>
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -58,6 +58,7 @@ export default function LandingPage() {
           <p className="text-gray-600 text-lg">
             Mantén tus tareas bajo control, visualiza tu progreso y aumenta tu productividad.
           </p>
+
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               to="/register"
@@ -135,7 +136,7 @@ export default function LandingPage() {
         viewport={{ once: true }}
         className="py-12 bg-blue-50 text-center"
       >
-        <h3 className="text-3xl font-bold mb-4">¿Listo para organizar tus tareas?</h3>
+        <h3 className="text-3xl font-bold mb-8">¿Listo para organizar tus tareas?</h3>
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link
             to="/register"
@@ -148,7 +149,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-6 bg-white text-center text-gray-500 text-sm">
-        &copy; 2025 Gestor de Tareas. Todos los derechos reservados.
+        &copy; 2025 Nouteam. Todos los derechos reservados.
       </footer>
     </div>
   );

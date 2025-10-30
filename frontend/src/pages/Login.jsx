@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4">
       <div className="mt-6 mb-6">
-        <h1 className="text-3xl font-bold text-blue-600">Gestor de Tareas</h1>
+        <h1 className="text-3xl font-bold text-blue-600">Nou<span className="font-light">team</span></h1>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg mt-16 mb-6">

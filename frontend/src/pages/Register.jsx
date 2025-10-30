@@ -75,7 +75,8 @@ export default function Register() {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4">
       <div className="mt-6 mb-6">
-        <h1 className="text-3xl font-bold text-blue-600">Gestor de Tareas</h1>
+        <h1 className="text-3xl font-bold text-blue-600">Nou<span className="font-light">team</span></h1>
+        
       </div>
 
       <motion.div
