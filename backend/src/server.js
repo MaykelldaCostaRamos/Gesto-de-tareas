@@ -25,7 +25,7 @@ connectDB();
 // Lista de orígenes permitidos
 // ==========================
 const whitelist = [
-  "https://gestordetareas-es.vercel.app"
+  "https://nouteam.vercel.app"
 ];
 
 // ==========================
